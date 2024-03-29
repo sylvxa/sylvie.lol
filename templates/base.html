@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='base.css') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
     {% if request.endpoint == 'home' %}
     <link href="{{ url_for('static', filename='home.css') }}" rel="stylesheet" type="text/css">
     {% elif request.endpoint == 'contact' %}
