@@ -101,3 +101,19 @@ a {
         text-align: center;
     }
 }
+
+input {
+    background-color: var(--color-crust);
+    font-family: var(--font-family);
+    color: var(--color-text);
+    border: none;
+    font-size: 16px;
+}
+
+button {
+    background-color: var(--color-crust);
+    font-family: var(--font-family);
+    color: var(--color-pink);
+    border: none;
+    font-size: 16px;
+}

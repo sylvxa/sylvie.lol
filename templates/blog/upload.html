@@ -4,7 +4,14 @@
 
 {% block header %}
 <link href="{{ url_for('static', filename='blog-base.css') }}" rel="stylesheet" type="text/css">
-<link href="{{ url_for('static', filename='blog-upload.css') }}" rel="stylesheet" type="text/css">
+
+<!-- Create a simple CodeMirror instance -->
+<link rel="stylesheet" href="{{ url_for('static', filename='lib/codemirror.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='lib/mocha.css') }}">
+<script src="{{ url_for('static', filename='lib/codemirror.js') }}" defer></script>
+<script src="{{ url_for('static', filename='lib/markdown.js') }}" defer></script>
+
+<link href="{{ url_for('static', filename='blog-upload.css') }}" rel="stylesheet" type="text/css"> <!-- Need to load this after codemirror -->
 <script src="{{ url_for('static', filename='upload.js') }}" defer></script>
 <meta name="robots" content="noindex">
 {% endblock %}
@@ -14,60 +21,45 @@
 <div class="navbar">
     <a href="/">[HOME]</a>
     <a href="/blog" class="we-are-here">[BLOG]</a>
+    <a href="/contact">[CONTACT]</a>
 </div>
 
 <div class="content">
     <h1>SUPER SECRET MEGA POST UPLOADER!</h1>
-    <form action="{{ url_for('blog_upload_api') }}" enctype="multipart/form-data" method="POST">
-        <div>
-            <label for="password">Password</label>
-            <input name="password" id="password" value="" />
+    <h3>If you are seeing this, no you aren't.</h3>
+    <div class="control">
+        <div class="editor">
+            <textarea name="editor" id="editor" rows="30"></textarea>
         </div>
-        <div>
-            <label for="title">Post Title</label>
-            <input name="title" id="title" value="Hello world" />
-        </div>
-        <div>
-            <label for="description">Post Description</label>
-            <input name="description" id="description" value="Lorem Ipsum" />
-        </div>
-        <div>
-            <label for="content">Post Content</label>
-            <textarea name="content" id="content"></textarea>
-        </div>
-
-        <div>
-            <button>Upload</button>
-        </div>
-    </form>
-</div>
-
-<form action="{{ url_for('blog_upload_image_api') }}" enctype="multipart/form-data" method="POST", target="_blank">
-    <div>
-        <label for="password">Password</label>
-        <input name="password" id="password" value="" />
+       <div class="actions">
+            <span style="font-size: 32px;">Post Details</span>
+            <div class="details">
+                <span>Title</span>
+                <input type="text" class="post-title">
+                <span>Description</span>
+                <input type="text" class="post-description">
+            </div>
+            <span style="font-size: 32px;">Controls</span>
+            <div class="password">
+                <span>Parental Lock</span>
+                <input type="password">
+            </div>
+            <div class="uploader">
+                <span>Upload File</span>
+                <label class="file-upload">
+                    <input type="file"/>
+                    Upload
+                </label>                
+                <div class="files">
+                </div>
+            </div>
+            <div class="deleter">
+                <span>Delete Post</span>
+                <input type="number" name="post-id" id="post-id">
+                <button>Delete</button>
+            </div>
+            <button class="post-button">Post!</button>
+       </div>
     </div>
-    <div>
-        <label for="file">File</label>
-        <input type="file" id="file" name="file" />
-    </div>
-    <div>
-        <button>Upload</button>
-    </div>
-</form>
-
-<form action="{{ url_for('blog_delete_api') }}" enctype="multipart/form-data" method="POST">
-    <div>
-        <label for="password">Password</label>
-        <input name="password" id="password" value="" />
-    </div>
-    <div>
-        <label for="id">Post ID</label>
-        <input type="number" id="id" name="id" />
-    </div>
-    <div>
-        <button>Delete</button>
-    </div>
-</form>
 </div>
 {% endblock %}

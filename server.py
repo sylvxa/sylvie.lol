@@ -125,11 +125,11 @@ def blog_post(post_id):
         return render_template("not_found.html"), 404
     return render_template("blog/post.html", post=Post.from_db(result))
 
-@app.route('/blog/supersecretmegacoolendpoint')
+@app.route('/blog/control')
 def blog_upload():
     return render_template("blog/upload.html")
 
-@app.route('/blog/supersecretmegacoolendpoint/post', methods=['POST'])
+@app.route('/blog/control/post', methods=['POST'])
 def blog_upload_api():
     if request.form.get("password", "") == os.getenv("PASSWORD"):
         title = request.form.get("title", "Untitled")
@@ -140,7 +140,7 @@ def blog_upload_api():
         return redirect(url_for('blog_post', post_id=post_id))
     return "stop poking around, doofus", 401
 
-@app.route('/blog/supersecretmegacoolendpoint/image', methods=['POST'])
+@app.route('/blog/control/image', methods=['POST'])
 def blog_upload_image_api():
     if request.form.get("password", "") == os.getenv("PASSWORD"):
         if 'file' in request.files:
@@ -151,9 +151,15 @@ def blog_upload_image_api():
                 if not os.path.exists(folder_path):
                     os.makedirs(folder_path)
                 file.save(os.path.join(folder_path, filename))
-                return redirect(url_for('static', filename='post-contents/' + filename))
+                return url_for('static', filename='post-contents/' + filename)
+            else:
+                return "Filename is empty"
+        else:
+            return "No file found"
+    else:
+        return "get out ya nosy prick", 401
 
-@app.route('/blog/supersecretmegacoolendpoint/delete', methods=['POST'])
+@app.route('/blog/control/delete', methods=['POST'])
 def blog_delete_api():
     if request.form.get("password", "") == os.getenv("PASSWORD"):
         post_id = request.form.get("id")
