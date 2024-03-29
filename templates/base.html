@@ -5,6 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='base.css') }}">
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    
+    <!-- Primary Meta Tags -->
+    <title>sylvie.lol</title>
+    <meta name="title" content="sylvie.lol" />
+    <meta name="description" content="Full-stack developer and blåhaj enjoyer. :3" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://sylvie.lol/" />
+    <meta property="og:title" content="sylvie.lol" />
+    <meta property="og:description" content="Full-stack developer and blåhaj enjoyer. :3" />
+    <meta property="og:image" content="https://sylvie.lol/static/assets/profile.png" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://sylvie.lol/" />
+    <meta property="twitter:title" content="sylvie.lol" />
+    <meta property="twitter:description" content="Full-stack developer and blåhaj enjoyer. :3" />
+    <meta property="twitter:image" content="https://sylvie.lol/static/assets/profile.png" />
+
     {% if request.endpoint %}
     {% if request.endpoint == 'home' %}
     <link href="{{ url_for('static', filename='home.css') }}" rel="stylesheet" type="text/css">

@@ -1,5 +1,9 @@
+.flex {
+    height: auto;
+}
+
 .container {
-    height: 100vh;
+    height: auto;
 }
 
 /* Navbar */
