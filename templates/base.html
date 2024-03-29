@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='base.css') }}">
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    {% if request.endpoint %}
     {% if request.endpoint == 'home' %}
     <link href="{{ url_for('static', filename='home.css') }}" rel="stylesheet" type="text/css">
     {% elif request.endpoint == 'contact' %}
@@ -20,6 +21,7 @@
             <script src="{{ url_for('static', filename='upload.js') }}" defer></script>
             <meta name="robots" content="noindex">
         {% endif %}
+    {% endif %}
     {% endif %}
     <script src="{{ url_for('static', filename='time.js') }}" defer></script>
     <style>

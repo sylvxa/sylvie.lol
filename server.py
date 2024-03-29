@@ -121,7 +121,8 @@ def blog_post(post_id):
     query = SELECT_POST_BY_ID_SQL
     cursor.execute(query, [post_id])
     result = cursor.fetchone()
-    
+    if not result:
+        return render_template("not_found.html"), 404
     return render_template("blog/post.html", post=Post.from_db(result))
 
 @app.route('/blog/supersecretmegacoolendpoint')
@@ -159,6 +160,14 @@ def blog_delete_api():
         delete_post(get_db(), post_id)
         return redirect(url_for('blog_explore'))
     return "stop poking around, doofus", 401
+
+@app.errorhandler(404) 
+def not_found(e): 
+    return render_template("not_found.html") 
+
+@app.errorhandler(500)
+def error(e): 
+    return render_template("borked.html") 
 
 if __name__ == '__main__':
     app.run(debug=True, host="0.0.0.0")
