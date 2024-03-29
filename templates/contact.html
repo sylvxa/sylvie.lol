@@ -2,6 +2,10 @@
 
 {% block title %}contact{% endblock %}
 
+{% block header %}
+<link href="{{ url_for('static', filename='contact.css') }}" rel="stylesheet" type="text/css">
+{% endblock %}
+
 {% block content %}
 <div class="navbar">
     <a href="/">[ABOUT]</a>

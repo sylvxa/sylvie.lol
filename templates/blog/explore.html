@@ -2,6 +2,11 @@
 
 {% block title %}blog{% endblock %}
 
+{% block header %}
+<link href="{{ url_for('static', filename='blog-base.css') }}" rel="stylesheet" type="text/css">
+<link href="{{ url_for('static', filename='blog-explore.css') }}" rel="stylesheet" type="text/css">
+{% endblock %}
+
 {% block content %}
 <div class="navbar">
     <a href="/">[ABOUT]</a>

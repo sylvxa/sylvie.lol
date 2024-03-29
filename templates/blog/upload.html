@@ -2,6 +2,14 @@
 
 {% block title %}super secret mega post uploader{% endblock %}
 
+{% block header %}
+<link href="{{ url_for('static', filename='blog-base.css') }}" rel="stylesheet" type="text/css">
+<link href="{{ url_for('static', filename='blog-upload.css') }}" rel="stylesheet" type="text/css">
+<script src="{{ url_for('static', filename='upload.js') }}" defer></script>
+<meta name="robots" content="noindex">
+{% endblock %}
+
+
 {% block content %}
 <div class="navbar">
     <a href="/">[HOME]</a>

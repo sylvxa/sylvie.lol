@@ -1,3 +1,4 @@
+{% set page_title %}{% block title %}{% endblock %}{% endset %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,44 +6,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='base.css') }}">
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
-    
+
+    {% block meta %}
+    <!-- These are by default, but individual pages will want to overwrite these -->
     <!-- Primary Meta Tags -->
-    <title>sylvie.lol</title>
-    <meta name="title" content="sylvie.lol" />
+    <meta name="title" content="{{ page_title }} - sylvie.lol" />
     <meta name="description" content="Full-stack developer and blåhaj enjoyer. :3" />
+    <meta name="theme-color" content="#f5c2e7">
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://sylvie.lol/" />
-    <meta property="og:title" content="sylvie.lol" />
+    <meta property="og:title" content="{{ page_title }} - sylvie.lol" />
     <meta property="og:description" content="Full-stack developer and blåhaj enjoyer. :3" />
     <meta property="og:image" content="https://sylvie.lol/static/assets/profile.png" />
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:url" content="https://sylvie.lol/" />
-    <meta property="twitter:title" content="sylvie.lol" />
+    <meta property="twitter:title" content="{{ page_title }} - sylvie.lol" />
     <meta property="twitter:description" content="Full-stack developer and blåhaj enjoyer. :3" />
     <meta property="twitter:image" content="https://sylvie.lol/static/assets/profile.png" />
+    {% endblock %}
 
-    {% if request.endpoint %}
-    {% if request.endpoint == 'home' %}
-    <link href="{{ url_for('static', filename='home.css') }}" rel="stylesheet" type="text/css">
-    {% elif request.endpoint == 'contact' %}
-    <link href="{{ url_for('static', filename='contact.css') }}" rel="stylesheet" type="text/css">
-    {% elif request.endpoint.startswith('blog') %}
-        <link href="{{ url_for('static', filename='blog-base.css') }}" rel="stylesheet" type="text/css">
-        {% if request.endpoint == 'blog_explore' %}
-            <link href="{{ url_for('static', filename='blog-explore.css') }}" rel="stylesheet" type="text/css">
-        {% elif request.endpoint == 'blog_post' %}
-            <link href="{{ url_for('static', filename='blog-post.css') }}" rel="stylesheet" type="text/css">
-        {% elif request.endpoint == 'blog_upload' %}
-            <link href="{{ url_for('static', filename='blog-upload.css') }}" rel="stylesheet" type="text/css">
-            <script src="{{ url_for('static', filename='upload.js') }}" defer></script>
-            <meta name="robots" content="noindex">
-        {% endif %}
-    {% endif %}
-    {% endif %}
+    {% block header %}{% endblock %}
+
     <script src="{{ url_for('static', filename='time.js') }}" defer></script>
     <style>
         @font-face {
@@ -56,7 +44,7 @@
             font-display: swap;
         }
     </style>
-    <title>{% block title %}{% endblock %} - sylvie.lol</title>
+    <title>{{ page_title }} - sylvie.lol</title>
 </head>
 <body>
     <div class="flex">
