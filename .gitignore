@@ -163,3 +163,5 @@ cython_debug/
 blog.db
 # Socket
 sylvie.sock
+# Images
+static/post-contents/
