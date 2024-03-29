@@ -1,0 +1,38 @@
+/* Post */
+.post {
+    margin: 20px;
+}
+
+.post-title {
+    font-size: 24px;
+}
+
+.post-title a {
+    color: var(--color-pink);
+    text-decoration: underline;
+}
+
+.post-title span {
+    color: var(--color-subtext1);
+}
+
+.post-title span::before {
+    color: var(--color-subtext1);
+    content: "- ";
+}
+
+@media screen and (max-width: 680px) { /* We are probably on mobile */
+    .post-title span {
+        display: block;
+        font-size: 20px;
+    }
+    
+    .post-title span::before {
+        content: "";
+    }
+}
+
+.post .description {
+    color: var(--color-subtext0);
+    font-size: 20px;
+}

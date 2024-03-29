@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='base.css') }}">
+    {% if request.endpoint == 'home' %}
+    <link href="{{ url_for('static', filename='home.css') }}" rel="stylesheet" type="text/css">
+    {% elif request.endpoint == 'contact' %}
+    <link href="{{ url_for('static', filename='contact.css') }}" rel="stylesheet" type="text/css">
+    {% elif request.endpoint.startswith('blog') %}
+        <link href="{{ url_for('static', filename='blog-base.css') }}" rel="stylesheet" type="text/css">
+        {% if request.endpoint == 'blog_explore' %}
+            <link href="{{ url_for('static', filename='blog-explore.css') }}" rel="stylesheet" type="text/css">
+        {% elif request.endpoint == 'blog_post' %}
+            <link href="{{ url_for('static', filename='blog-post.css') }}" rel="stylesheet" type="text/css">
+        {% elif request.endpoint == 'blog_upload' %}
+            <link href="{{ url_for('static', filename='blog-upload.css') }}" rel="stylesheet" type="text/css">
+            <script src="{{ url_for('static', filename='upload.js') }}" defer></script>
+            <meta name="robots" content="noindex">
+        {% endif %}
+    {% endif %}
+    <script src="{{ url_for('static', filename='time.js') }}" defer></script>
+    <style>
+        @font-face {
+            font-family: "VCR OSD Mono";
+            src: url("{{ url_for('static', filename='assets/fonts/VCR-OSD-Mono.eot') }}") format("embedded-opentype"),
+                url("{{ url_for('static', filename='assets/fonts/VCR-OSD-Mono.woff') }}") format("woff"),
+                url("{{ url_for('static', filename='assets/fonts/VCR-OSD-Mono.woff2') }}") format("woff2"),
+                url("{{ url_for('static', filename='assets/fonts/VCR-OSD-Mono.ttf') }}") format("truetype");
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+    </style>
+    <title>{% block title %}{% endblock %} - sylvie.lol</title>
+</head>
+<body>
+    <div class="flex">
+        <div class="container">
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+</body>
+</html>

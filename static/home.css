@@ -1,0 +1,86 @@
+.navbar {
+    background-color: var(--color-base);
+    height: 48px;
+    font-size: 24px;
+    box-sizing: border-box;
+    padding: 12px;
+}
+
+.navbar .time {
+    float: right;
+}
+
+.we-are-here {
+    color: var(--color-text);
+}
+
+@media screen and (max-width: 680px) { /* We are probably on mobile */
+    .time {
+        display: none;
+    }
+
+    .navbar {
+        text-align: center;
+    }
+}
+
+/* Card */
+.content {
+    margin: 16px;
+}
+
+.card {
+    display: flex;
+}
+
+.card img {
+    width: 96px;
+    height: 96px;
+    outline: var(--color-text) 1px solid;
+}
+
+.info-list {
+    margin-left: 16px;
+    display: block;
+}
+
+.info-list span {
+    width: 100%;
+    display: block;
+    font-size: 24px;
+}
+
+.info-list .name {
+    color: var(--color-pink);
+    font-size: 32px;
+}
+
+/* Card > Links */
+.quick-links a:nth-of-type(1) { /* Discord */
+    color: var(--color-blue);
+}
+
+.quick-links a:nth-of-type(2) { /* Modrinth */
+    color: var(--color-green);
+}
+
+.quick-links a:nth-of-type(3) { /* GitHub */
+    color: var(--color-peach);
+}
+
+/* Content */
+p {
+    width: 100%;
+}
+
+/* 88x31 */
+.add-your-own {
+    color: var(--color-subtext0);
+    font-size: 16px;
+}
+
+@media screen and (max-width: 680px) { /* We are probably on mobile */
+    .add-your-own {
+        display: none;
+    }
+}

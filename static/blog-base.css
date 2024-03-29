@@ -1,0 +1,41 @@
+.container {
+    height: 100vh;
+}
+
+/* Navbar */
+.navbar {
+    background-color: var(--color-base);
+    height: 48px;
+    font-size: 24px;
+    box-sizing: border-box;
+    padding: 12px;
+    text-align: center;
+}
+
+.we-are-here {
+    color: var(--color-text);
+}
+
+/* Base styles */
+.title {
+    margin: 16px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: normal;
+    margin: 4px;
+}
+
+h1, h2 {
+    font-size: 40px;
+}
+
+h3, h4, h5, h6 {
+    color: var(--color-subtext0);
+    font-size: 20px;
+}
+
+a {
+    text-decoration: none;
+    color: var(--color-pink);
+}

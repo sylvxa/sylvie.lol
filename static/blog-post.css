@@ -1,0 +1,17 @@
+/* Post */
+.back {
+    color: var(--color-subtext0);
+    margin-left: 4px;
+}
+
+.title h1 {
+    color: var(--color-pink);
+}
+
+.title h3:nth-of-type(2) {
+    color: var(--color-text);
+}
+
+.content {
+    margin: 20px;
+}

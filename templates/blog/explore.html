@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}blog{% endblock %}
+
+{% block content %}
+<div class="navbar">
+    <a href="/">[ABOUT]</a>
+    <a href="/blog" class="we-are-here">[BLOG]</a>
+    <a href="/contact">[CONTACT]</a>
+</div>
+<div class="title">
+    <h1>Sylvie's Blog</h1>
+    <h3>Some writeups on what I've been working on.</h3>
+</div>
+<div class="posts">
+    {% for post in posts %}
+    <div class="post">
+        <div class="post-title">
+            <a href="{{ post.get_url() }}">{{ post.title }}</a>
+            <span>{{ post.format_timestamp() }}</span>
+        </div>
+        <span class="description">{{ post.description }}</span>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

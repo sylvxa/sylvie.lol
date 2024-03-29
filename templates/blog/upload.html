@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block title %}super secret mega post uploader{% endblock %}
+
+{% block content %}
+<div class="navbar">
+    <a href="/">[HOME]</a>
+    <a href="/blog" class="we-are-here">[BLOG]</a>
+</div>
+
+<div class="content">
+    <h1>SUPER SECRET MEGA POST UPLOADER!</h1>
+    <form action="{{ url_for('blog_upload_api') }}" enctype="multipart/form-data" method="POST">
+        <div>
+            <label for="password">Password</label>
+            <input name="password" id="password" value="" />
+        </div>
+        <div>
+            <label for="title">Post Title</label>
+            <input name="title" id="title" value="Hello world" />
+        </div>
+        <div>
+            <label for="description">Post Description</label>
+            <input name="description" id="description" value="Lorem Ipsum" />
+        </div>
+        <div>
+            <label for="content">Post Content</label>
+            <textarea name="content" id="content"></textarea>
+        </div>
+
+        <div>
+            <button>Upload</button>
+        </div>
+    </form>
+</div>
+
+<form action="{{ url_for('blog_upload_image_api') }}" enctype="multipart/form-data" method="POST", target="_blank">
+    <div>
+        <label for="password">Password</label>
+        <input name="password" id="password" value="" />
+    </div>
+    <div>
+        <label for="file">File</label>
+        <input type="file" id="file" name="file" />
+    </div>
+    <div>
+        <button>Upload</button>
+    </div>
+</form>
+
+<form action="{{ url_for('blog_delete_api') }}" enctype="multipart/form-data" method="POST">
+    <div>
+        <label for="password">Password</label>
+        <input name="password" id="password" value="" />
+    </div>
+    <div>
+        <label for="id">Post ID</label>
+        <input type="number" id="id" name="id" />
+    </div>
+    <div>
+        <button>Delete</button>
+    </div>
+</form>
+</div>
+{% endblock %}
