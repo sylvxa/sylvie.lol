@@ -2,7 +2,8 @@ import os, time, datetime
 import sqlite3
 import dotenv
 import uuid
-from flask import Flask, render_template, url_for, g, request, redirect, send_from_directory
+from flask import Flask, render_template, url_for, g, request, redirect, send_from_directory, Response
+from xml.dom import minidom
 import markdown
 app = Flask(__name__)
 dotenv.load_dotenv()
@@ -11,6 +12,7 @@ dotenv.load_dotenv()
 def favicon():
     return send_from_directory(os.path.join(app.root_path, 'static'), 'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
+ROOT_PAGE = "https://sylvie.lol"
 ABOUT_ME = "static/pages/home.md"
 FIRST_POST = "static/pages/hello.md"
 DATABASE = "blog.db"
@@ -92,6 +94,13 @@ class Post:
     def get_url(self) -> str:
         return url_for("blog_post", post_id=self.id)
 
+def fetch_all_posts() -> list[Post]:
+    cursor = get_db().cursor()
+    query = SELECT_POSTS_SQL
+    cursor.execute(query)
+    results = cursor.fetchall()
+    return list(map(Post.from_db, results)) 
+
 def insert_post(db, title: str, description: str, content: str) -> int:
     post_id = int(time.time())
     cursor = db.cursor()
@@ -107,13 +116,7 @@ def delete_post(db, post_id: str) -> int:
 
 @app.route('/blog')
 def blog_explore():
-    cursor = get_db().cursor()
-    query = SELECT_POSTS_SQL
-    cursor.execute(query)
-    results = cursor.fetchall()
-    posts = list(map(Post.from_db, results)) # Converts each database post to a Python post
-
-    return render_template("blog/explore.html", posts=posts)
+    return render_template("blog/explore.html", posts=fetch_all_posts())
 
 @app.route('/blog/<int:post_id>')
 def blog_post(post_id):
@@ -124,6 +127,39 @@ def blog_post(post_id):
     if not result:
         return render_template("not_found.html"), 404
     return render_template("blog/post.html", post=Post.from_db(result))
+
+def xml_text_obj(document: minidom.Document, name: str, value: any):
+    element = document.createElement(name)
+    text_node = document.createTextNode(str(value))
+    element.appendChild(text_node)
+    return element
+
+def xml_url_obj(document: minidom.Document, location: str, last_modified: datetime.datetime, change_frequency: str, priority: float):
+    url = document.createElement('url') 
+    url.appendChild(xml_text_obj(document, "loc", location))
+    if last_modified is not None:
+        url.appendChild(xml_text_obj(document, "lastmod", last_modified.strftime("%Y-%m-%d")))
+    if change_frequency is not None:
+        url.appendChild(xml_text_obj(document, "changefreq", change_frequency))
+    if priority is not None:
+        url.appendChild(xml_text_obj(document, "priority", priority))
+    return url
+
+@app.route('/sitemap.xml')
+def sitemap():
+    document = minidom.Document() 
+    urlset = document.createElement('urlset')
+    urlset.setAttribute("xmlns", "http://www.sitemaps.org/schemas/sitemap/0.9")
+
+    urlset.appendChild(xml_url_obj(document, ROOT_PAGE, None, "monthly", 1.0))
+    urlset.appendChild(xml_url_obj(document, ROOT_PAGE + "/blog", None, "monthly", 0.9))
+
+    for post in fetch_all_posts():
+        urlset.appendChild(xml_url_obj(document, ROOT_PAGE + post.get_url(), post.posted, "yearly", 0.7))
+
+    document.appendChild(urlset) 
+    content = document.toprettyxml(indent = "\t")  
+    return Response(content, mimetype='text/xml')
 
 @app.route('/blog/control')
 def blog_upload():
