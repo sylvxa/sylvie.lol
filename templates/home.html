@@ -34,11 +34,11 @@
         <!-- INSERT IMAGES -->
         <div class="gifs">
             {% for link in eeto %}
-                <img src="{{ link }}" alt="88x31">
+                <a href="{{ link.link }}"><img src="{{ link.file }}" alt="88x31"></a>
             {% endfor %}
         </div>
         <span class="add-your-own">
-            Do you have a 88x31 of your own? Contact me!
+            Do you have a 88x31 of your own? Contact me! (also if you have your own site, add mine!)
         </span>
     </div>
 </div>

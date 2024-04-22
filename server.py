@@ -65,7 +65,20 @@ def home():
     eetos = [] # (E)ight(E)ight(T)hree(O)nes
     directory = "assets/eighteightthreeone"
     for file in os.listdir("static/" + directory):
-        eetos.append(url_for('static', filename=directory + "/" + file))
+        filename = directory + "/" + file
+        if not filename.endswith(".gif") and not filename.endswith(".png") and not filename.endswith(".jpg"): continue
+        
+        # Add option for 88x31's to have a link (as they are supposed to)
+        link = "#"
+        link_file = "static" + filename + ".txt"
+        if os.path.exists(link_file):
+            with open(link_file) as file:
+                link = file.read()
+
+        eetos.append({
+            "file": url_for('static', filename=filename),
+            "link": link
+        })
 
     return render_template("home.html", eeto=eetos, home_text=home_text)
 
