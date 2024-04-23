@@ -66,7 +66,7 @@ def home():
     directory = "assets/eighteightthreeone"
     for file in sorted(os.listdir("static/" + directory)):
         filename = directory + "/" + file
-        if not filename.endswith(".gif") and not filename.endswith(".png") and not filename.endswith(".jpg"): continue
+        if not filename.endswith(".gif") and not filename.endswith(".png") and not filename.endswith(".apng") and not filename.endswith(".jpg"): continue
         
         # Add option for 88x31's to have a link (as they are supposed to)
         link = "#"
