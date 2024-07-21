@@ -3,6 +3,9 @@ import os
 import sqlite3
 import time
 import uuid
+from typing import Optional
+
+import requests
 from xml.dom import minidom
 
 import dotenv
@@ -46,8 +49,12 @@ def initialize_db():
     cursor = db.cursor()
     try:
         cursor.execute(CREATE_TABLE_SQL)
-        with open(FIRST_POST, "r", encoding="utf-8") as f:
-            cursor.execute(INSERT_POST_SQL, [int(time.time()), "Hello world!", "This is my site, welcome!", f.read()])
+        with open(FIRST_POST, "r", encoding="utf-8") as post_file:
+            cursor.execute(INSERT_POST_SQL,
+                           [int(time.time()),
+                            "Hello world!",
+                            "This is my site, welcome!",
+                            post_file.read()])
             db.commit()
     except sqlite3.OperationalError:
         pass
@@ -63,14 +70,64 @@ def get_db():
 
 
 @app.teardown_appcontext
-def close_connection(exception):
+def close_connection(_):
     db = getattr(g, '_database', None)
     if db is not None:
         db.close()
 
 
+LAST_FETCHED = datetime.datetime(1970, 1, 1)  # Make sure it gets fetched if we reboot
+PROFILE_URL_FORMAT = "https://discord.com/api/v10/users/{id}"
+IMAGE_URL_FORMAT = "https://cdn.discordapp.com/avatars/{id}/{avatar}.png?size=128"
+IMAGE_LOCATION = "static/assets/discord-profile.png"
+discord_username = "sylvie <3"
+
+
+def get_discord_profile() -> str:
+    global discord_username, LAST_FETCHED
+
+    # Use cached values if it's been more than 3 days since the last time it was fetched.
+    delta = datetime.datetime.now() - LAST_FETCHED
+    if delta.days <= 3:
+        return discord_username
+
+    # Make a request using a Discord bot to get my user profile
+    discord_id = os.getenv("DISCORD_ID")
+    profile_request = requests.get(PROFILE_URL_FORMAT.replace("{id}", discord_id), headers={
+        "Authorization": "Bot " + os.getenv("DISCORD_TOKEN"),
+        "User-Agent": "DiscordBot (https://sylvie.lol/, 1.0.0)"
+    })
+
+    if profile_request.ok:
+        profile = profile_request.json()
+        discord_username = profile.get('global_name', discord_username)
+
+        # We download the image to avoid spamming Discord's CDN too much.
+        image_url = (IMAGE_URL_FORMAT
+                     .replace("{id}", discord_id)
+                     .replace("{avatar}", profile.get("avatar")))
+        image_request = requests.get(image_url)
+        if image_request.ok:
+            image = image_request.content
+
+            with open(IMAGE_LOCATION, 'wb') as image_file:
+                image_file.write(image)
+        else:
+            print("Couldn't fetch Discord profile picture!")
+            print(image_request.text)
+    else:
+        print("Couldn't fetch Discord profile!")
+        print(profile_request.text)
+
+    LAST_FETCHED = datetime.datetime.now()
+    return discord_username
+
+
 @app.route('/')
 def home():
+    # Make info card reflect my Discord profile
+    discord_name = get_discord_profile()
+
     # Append 88x31s
     eetos = []  # (E)ight(E)ight(T)hree(O)nes
     directory = "assets/eighteightthreeone"
@@ -91,7 +148,7 @@ def home():
             "link": link
         })
 
-    return render_template("home.html", eeto=eetos, home_text=HOME_TEXT)
+    return render_template("home.html", eeto=eetos, home_text=HOME_TEXT, discord_name=discord_name)
 
 
 @app.route('/contact')
@@ -100,8 +157,8 @@ def contact():
 
 
 class Post:
-    def __init__(self, id: int, title: str, description: str, content: str, posted: datetime.datetime) -> None:
-        self.id = id
+    def __init__(self, post_id: int, title: str, description: str, content: str, posted: datetime.datetime) -> None:
+        self.post_id = post_id
         self.title = title
         self.description = description
         self.content = content
@@ -118,7 +175,7 @@ class Post:
         return markdown.markdown(self.content)
 
     def get_url(self) -> str:
-        return url_for("blog_post", post_id=self.id)
+        return url_for("blog_post", post_id=self.post_id)
 
 
 def fetch_all_posts() -> list[Post]:
@@ -137,11 +194,10 @@ def insert_post(db, title: str, description: str, content: str) -> int:
     return post_id
 
 
-def delete_post(db, post_id: str) -> int:
+def delete_post(db, post_id: str):
     cursor = db.cursor()
     cursor.execute(DELETE_POST_BY_ID_SQL, [post_id])
     db.commit()
-    return post_id
 
 
 @app.route('/blog')
@@ -168,7 +224,10 @@ def xml_text_obj(document: minidom.Document, name: str, value: any):
     return element
 
 
-def xml_url_obj(document: minidom.Document, location: str, last_modified: datetime.datetime, change_frequency: str,
+def xml_url_obj(document: minidom.Document,
+                location: str,
+                last_modified: Optional[datetime.datetime],
+                change_frequency: str,
                 priority: float):
     url = document.createElement('url')
     url.appendChild(xml_text_obj(document, "loc", location))
@@ -233,7 +292,7 @@ def blog_upload_image_api():
         else:
             return "No file found"
     else:
-        return "Leave, please!", 401
+        return "Get your own image service!", 401
 
 
 @app.route('/blog/control/delete', methods=['POST'])
@@ -242,17 +301,17 @@ def blog_delete_api():
         post_id = request.form.get("id")
         delete_post(get_db(), post_id)
         return redirect(url_for('blog_explore'))
-    return "stop poking around, doofus", 401
+    return "Hey, get outta there!", 401
 
 
 @app.errorhandler(404)
 def not_found(e):
-    return render_template("not_found.html")
+    return render_template("not_found.html"), 404
 
 
 @app.errorhandler(500)
 def error(e):
-    return render_template("borked.html")
+    return render_template("borked.html"), 500
 
 
 if __name__ == '__main__':
