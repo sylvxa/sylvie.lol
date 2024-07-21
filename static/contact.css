@@ -1,20 +1,3 @@
-/* NavBar */
-.navbar {
-    background-color: var(--color-base);
-    height: 48px;
-    font-size: 24px;
-    box-sizing: border-box;
-    padding: 12px;
-}
-
-.navbar .time {
-    float: right;
-}
-
-.we-are-here {
-    color: var(--color-text);
-}
-
 @media screen and (max-width: 680px) { /* We are probably on mobile */
     .time {
         display: none;

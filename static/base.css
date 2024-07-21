@@ -36,11 +36,6 @@ html, body {
     display: flex;
 }
 
-a {
-    text-decoration: none;
-    color: var(--color-pink);
-}
-
 .flex {
     width: 100vw;
     height: 100vh;
@@ -79,7 +74,7 @@ a {
 .navbar {
     background-color: var(--color-base);
     height: 48px;
-    font-size: 24px;
+    font-size: 23px;
     box-sizing: border-box;
     padding: 12px;
 }
@@ -88,8 +83,18 @@ a {
     float: right;
 }
 
-.we-are-here {
+a {
+    text-decoration: none;
+    color: var(--color-pink);
+}
+
+
+.navbar a {
     color: var(--color-text);
+}
+
+a.we-are-here {
+    color: var(--color-pink);
 }
 
 @media screen and (max-width: 680px) { /* We are probably on mobile */

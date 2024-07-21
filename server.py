@@ -1,19 +1,31 @@
-import os, time, datetime
+import datetime
+import os
 import sqlite3
-import dotenv
+import time
 import uuid
-from flask import Flask, render_template, url_for, g, request, redirect, send_from_directory, Response
 from xml.dom import minidom
+
+import dotenv
 import markdown
+from flask import Flask, render_template, url_for, g, request, redirect, send_from_directory, Response
+
 app = Flask(__name__)
 dotenv.load_dotenv()
 
+
 @app.route('/favicon.ico')
 def favicon():
-    return send_from_directory(os.path.join(app.root_path, 'static'), 'favicon.ico', mimetype='image/vnd.microsoft.icon')
+    return send_from_directory(os.path.join(app.root_path, 'static'),
+                               'favicon.ico',
+                               mimetype='image/vnd.microsoft.icon')
+
 
 ROOT_PAGE = "https://sylvie.lol"
 ABOUT_ME = "static/pages/home.md"
+
+with open(ABOUT_ME, "r", encoding="utf-8") as f:
+    HOME_TEXT = markdown.markdown(f.read())
+
 FIRST_POST = "static/pages/hello.md"
 DATABASE = "blog.db"
 
@@ -24,9 +36,10 @@ CREATE_TABLE_SQL = "CREATE TABLE blog ( \
     content text, \
     posted TIMESTAMP)"
 INSERT_POST_SQL = "INSERT INTO blog (id, title, description, content, posted) VALUES (?,?,?,?,DATETIME())"
-SELECT_POSTS_SQL = "SELECT * FROM blog ORDER BY id DESC;" # The "id"s are really just unix timestamps
+SELECT_POSTS_SQL = "SELECT * FROM blog ORDER BY id DESC;"  # The "id"s are really just unix timestamps
 SELECT_POST_BY_ID_SQL = "SELECT * FROM blog WHERE id = ?"
 DELETE_POST_BY_ID_SQL = "DELETE FROM blog WHERE id = ?"
+
 
 def initialize_db():
     db = sqlite3.connect(DATABASE, detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
@@ -40,6 +53,7 @@ def initialize_db():
         pass
     return db
 
+
 def get_db():
     db = getattr(g, '_database', None)
     if db is None:
@@ -47,29 +61,26 @@ def get_db():
         setattr(g, "_database", db)
     return db
 
+
 @app.teardown_appcontext
 def close_connection(exception):
     db = getattr(g, '_database', None)
     if db is not None:
         db.close()
 
+
 @app.route('/')
 def home():
-    # The "about me" text.
-    home_text = None
-    with open(ABOUT_ME, "r", encoding="utf-8") as f:
-        content = f.read()
-        home_text = markdown.markdown(content)
-
     # Append 88x31s
-    eetos = [] # (E)ight(E)ight(T)hree(O)nes
+    eetos = []  # (E)ight(E)ight(T)hree(O)nes
     directory = "assets/eighteightthreeone"
-    for file in sorted(os.listdir("static/" + directory)):
-        filename = directory + "/" + file
-        if not filename.endswith(".gif") and not filename.endswith(".png") and not filename.endswith(".apng") and not filename.endswith(".jpg"): continue
-        
+    for filename in sorted(os.listdir("static/" + directory)):
+        filename = directory + "/" + filename
+        if not filename.endswith((".gif", ".png", ".apng", ".jpg")):
+            continue
+
         # Add option for 88x31's to have a link (as they are supposed to)
-        link = "#"
+        link = None
         link_file = "static/" + filename + ".txt"
         if os.path.exists(link_file):
             with open(link_file) as file:
@@ -80,11 +91,13 @@ def home():
             "link": link
         })
 
-    return render_template("home.html", eeto=eetos, home_text=home_text)
+    return render_template("home.html", eeto=eetos, home_text=HOME_TEXT)
+
 
 @app.route('/contact')
 def contact():
     return render_template("contact.html")
+
 
 class Post:
     def __init__(self, id: int, title: str, description: str, content: str, posted: datetime.datetime) -> None:
@@ -96,23 +109,25 @@ class Post:
 
     @staticmethod
     def from_db(obj: tuple):
-        return Post(*obj) # Database objects are layed out in the same way the arguments are, so we can just "unpack" them
-    
+        return Post(*obj)  # Database objects are laid out in the same way the arguments are, so we can "unpack" them
+
     def format_timestamp(self) -> str:
         return self.posted.strftime("%B %d, %Y").upper()
-    
+
     def markdown_content(self) -> str:
         return markdown.markdown(self.content)
-    
+
     def get_url(self) -> str:
         return url_for("blog_post", post_id=self.id)
+
 
 def fetch_all_posts() -> list[Post]:
     cursor = get_db().cursor()
     query = SELECT_POSTS_SQL
     cursor.execute(query)
     results = cursor.fetchall()
-    return list(map(Post.from_db, results)) 
+    return list(map(Post.from_db, results))
+
 
 def insert_post(db, title: str, description: str, content: str) -> int:
     post_id = int(time.time())
@@ -121,15 +136,18 @@ def insert_post(db, title: str, description: str, content: str) -> int:
     db.commit()
     return post_id
 
+
 def delete_post(db, post_id: str) -> int:
     cursor = db.cursor()
     cursor.execute(DELETE_POST_BY_ID_SQL, [post_id])
     db.commit()
     return post_id
 
+
 @app.route('/blog')
 def blog_explore():
     return render_template("blog/explore.html", posts=fetch_all_posts())
+
 
 @app.route('/blog/<int:post_id>')
 def blog_post(post_id):
@@ -141,14 +159,18 @@ def blog_post(post_id):
         return render_template("not_found.html"), 404
     return render_template("blog/post.html", post=Post.from_db(result))
 
+
+# Sitemap
 def xml_text_obj(document: minidom.Document, name: str, value: any):
     element = document.createElement(name)
     text_node = document.createTextNode(str(value))
     element.appendChild(text_node)
     return element
 
-def xml_url_obj(document: minidom.Document, location: str, last_modified: datetime.datetime, change_frequency: str, priority: float):
-    url = document.createElement('url') 
+
+def xml_url_obj(document: minidom.Document, location: str, last_modified: datetime.datetime, change_frequency: str,
+                priority: float):
+    url = document.createElement('url')
     url.appendChild(xml_text_obj(document, "loc", location))
     if last_modified is not None:
         url.appendChild(xml_text_obj(document, "lastmod", last_modified.strftime("%Y-%m-%d")))
@@ -158,9 +180,10 @@ def xml_url_obj(document: minidom.Document, location: str, last_modified: dateti
         url.appendChild(xml_text_obj(document, "priority", priority))
     return url
 
+
 @app.route('/sitemap.xml')
 def sitemap():
-    document = minidom.Document() 
+    document = minidom.Document()
     urlset = document.createElement('urlset')
     urlset.setAttribute("xmlns", "http://www.sitemaps.org/schemas/sitemap/0.9")
 
@@ -170,13 +193,16 @@ def sitemap():
     for post in fetch_all_posts():
         urlset.appendChild(xml_url_obj(document, ROOT_PAGE + post.get_url(), post.posted, "yearly", 0.7))
 
-    document.appendChild(urlset) 
-    content = document.toprettyxml(indent = "\t")  
+    document.appendChild(urlset)
+    content = document.toprettyxml(indent="\t")
     return Response(content, mimetype='text/xml')
 
+
+# Blog control
 @app.route('/blog/control')
 def blog_upload():
     return render_template("blog/upload.html")
+
 
 @app.route('/blog/control/post', methods=['POST'])
 def blog_upload_api():
@@ -187,7 +213,8 @@ def blog_upload_api():
         post_id = insert_post(get_db(), title, description, content)
 
         return redirect(url_for('blog_post', post_id=post_id))
-    return "stop poking around, doofus", 401
+    return "Could you stop poking around? Thank you!", 401
+
 
 @app.route('/blog/control/image', methods=['POST'])
 def blog_upload_image_api():
@@ -206,7 +233,8 @@ def blog_upload_image_api():
         else:
             return "No file found"
     else:
-        return "get out ya nosy prick", 401
+        return "Leave, please!", 401
+
 
 @app.route('/blog/control/delete', methods=['POST'])
 def blog_delete_api():
@@ -216,13 +244,16 @@ def blog_delete_api():
         return redirect(url_for('blog_explore'))
     return "stop poking around, doofus", 401
 
-@app.errorhandler(404) 
-def not_found(e): 
-    return render_template("not_found.html") 
+
+@app.errorhandler(404)
+def not_found(e):
+    return render_template("not_found.html")
+
 
 @app.errorhandler(500)
-def error(e): 
-    return render_template("borked.html") 
+def error(e):
+    return render_template("borked.html")
+
 
 if __name__ == '__main__':
     app.run(debug=True, host="0.0.0.0")
