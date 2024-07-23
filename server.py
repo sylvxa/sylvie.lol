@@ -131,7 +131,7 @@ def home():
     discord_name = get_discord_profile()
 
     # Get timezone info for people who don't use JavaScript
-    utc_now = datetime.datetime.now(datetime.UTC)
+    utc_now = datetime.datetime.now(datetime.timezone.utc)
     timezone = datetime.timezone(datetime.timedelta(hours=UTC_OFFSET))
 
     offset_now = utc_now.astimezone(timezone)
