@@ -123,10 +123,19 @@ def get_discord_profile() -> str:
     return discord_username
 
 
+UTC_OFFSET = -5
+
 @app.route('/')
 def home():
     # Make info card reflect my Discord profile
     discord_name = get_discord_profile()
+
+    # Get timezone info for people who don't use JavaScript
+    utc_now = datetime.datetime.now(datetime.UTC)
+    timezone = datetime.timezone(datetime.timedelta(hours=UTC_OFFSET))
+
+    offset_now = utc_now.astimezone(timezone)
+    formatted_now = offset_now.strftime("%I:%M %p")
 
     # Append 88x31s
     eetos = []  # (E)ight(E)ight(T)hree(O)nes
@@ -148,7 +157,11 @@ def home():
             "link": link
         })
 
-    return render_template("home.html", eeto=eetos, home_text=HOME_TEXT, discord_name=discord_name)
+    return render_template("home.html",
+                           eeto=eetos,  # 88x31s
+                           home_text=HOME_TEXT,  # Markdown formatted home text
+                           discord_name=discord_name,  # Discord username
+                           current_time=formatted_now)  # Time formatted
 
 
 @app.route('/contact')
