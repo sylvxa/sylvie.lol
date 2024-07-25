@@ -66,6 +66,14 @@ p {
 }
 
 /* 88x31 */
+.eighteightthreeone {
+	font-size: 0;
+}
+
+.eighteightthreeone img {
+	margin: 4px;
+}
+
 .eighteightthreeone img.clickable:hover {
     outline: 1px var(--color-text) solid
 }
