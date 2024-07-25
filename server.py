@@ -125,6 +125,7 @@ def get_discord_profile() -> str:
 
 UTC_OFFSET = -5
 
+
 @app.route('/')
 def home():
     # Make info card reflect my Discord profile
