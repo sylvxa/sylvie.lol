@@ -8,6 +8,8 @@ from typing import Optional
 import requests
 from xml.dom import minidom
 
+from email.utils import format_datetime
+
 import dotenv
 import markdown
 from flask import Flask, render_template, url_for, g, request, redirect, send_from_directory, Response
@@ -253,7 +255,7 @@ def xml_url_obj(document: minidom.Document,
         url.appendChild(xml_text_obj(document, "priority", priority))
     return url
 
-
+# Sitemap
 @app.route('/sitemap.xml')
 def sitemap():
     document = minidom.Document()
@@ -268,6 +270,60 @@ def sitemap():
 
     document.appendChild(urlset)
     content = document.toprettyxml(indent="\t")
+    return Response(content, mimetype='text/xml')
+
+
+# RSS
+@app.route('/blog/feed')
+def rss_feed():
+    document = minidom.Document()
+
+    root = document.createElement('rss')
+    root.setAttribute("version", "2.0")
+    root.setAttribute("xmlns:atom", "http://www.w3.org/2005/Atom")
+
+    channel = document.createElement('channel')
+    
+    # Channel attributes
+    channel.appendChild(xml_text_obj(document, "title", "Sylvie's Blog"))
+    channel.appendChild(xml_text_obj(document, "link", "https://sylvie.lol/blog"))
+    channel.appendChild(xml_text_obj(document, "description", "Some writeups on what I've been working on."))
+
+    channel.appendChild(xml_text_obj(document, "language", "en-us"))
+
+    who_i_am = "sylvia@sylvie.lol (Sylvie <3)"
+    channel.appendChild(xml_text_obj(document, "managingEditor", who_i_am))
+    channel.appendChild(xml_text_obj(document, "webMaster", who_i_am))
+
+    channel.appendChild(xml_text_obj(document, "generator", "Sylvie's Super-Duper Cool RSS Feed Generator"))
+
+    # atom:link
+    atom_link = document.createElement("atom:link")
+    atom_link.setAttribute("href", ROOT_PAGE + url_for("rss_feed"))
+    atom_link.setAttribute("rel", "self")
+    atom_link.setAttribute("type", "application/rss+xml")
+    channel.appendChild(atom_link)
+
+    # Posts
+    for post in fetch_all_posts():
+        item = document.createElement("item")
+
+        absolute_url = ROOT_PAGE + post.get_url()
+        item.appendChild(xml_text_obj(document, "title", post.title))
+        item.appendChild(xml_text_obj(document, "link", absolute_url))
+        item.appendChild(xml_text_obj(document, "description", post.description))
+
+        item.appendChild(xml_text_obj(document, "guid", absolute_url))
+
+        item.appendChild(xml_text_obj(document, "pubDate", format_datetime(post.posted)))
+
+        channel.appendChild(item)
+
+
+    root.appendChild(channel)
+    document.appendChild(root)
+
+    content = document.toprettyxml(indent="\t")    
     return Response(content, mimetype='text/xml')
 
 
