@@ -36,7 +36,7 @@
     <a href="/contact">[CONTACT]</a>
 </div>
 <div class="title">
-    <a href="{{ url_for('blog_explore') }}" class="back">&lt;&lt; Back to all posts</a>
+    <a href="{{ url_for('blog_explore') }}" class="back">&lt;&lt; Back to all posts</a> <a href="{{ url_for('blog_switchfont') }}">Switch Font</a>
     <h1>{{ post.title }}</h1>
     <h3>{{ post.format_timestamp() }}</h3>
     <h3>{{ post.description }}</h3>

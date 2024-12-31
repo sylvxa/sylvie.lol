@@ -36,15 +36,34 @@
     <style>
         @font-face {
             font-family: "VCR OSD Mono";
-            src: url("{{ url_for('static', filename='assets/fonts/VCR-OSD-Mono.eot') }}") format("embedded-opentype"),
+            src: url("{{ url_for('static', filename='assets/fonts/VCR-OSD-Mono.woff2') }}") format("woff2"), 
                 url("{{ url_for('static', filename='assets/fonts/VCR-OSD-Mono.woff') }}") format("woff"),
-                url("{{ url_for('static', filename='assets/fonts/VCR-OSD-Mono.woff2') }}") format("woff2"),
+                url("{{ url_for('static', filename='assets/fonts/VCR-OSD-Mono.eot') }}") format("embedded-opentype"),
                 url("{{ url_for('static', filename='assets/fonts/VCR-OSD-Mono.ttf') }}") format("truetype");
             font-weight: normal;
             font-style: normal;
             font-display: swap;
         }
+
+        @font-face {
+            font-family: "CozetteVector";
+            src: url("{{ url_for('static', filename='assets/fonts/CozetteVector.woff2') }}") format("woff2"),
+                url("{{ url_for('static', filename='assets/fonts/CozetteVector.woff') }}") format("woff"),
+                url("{{ url_for('static', filename='assets/fonts/CozetteVector.otf') }}") format("opentype"),
+                url("{{ url_for('static', filename='assets/fonts/CozetteVector.ttf') }}") format("truetype");
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
     </style>
+
+    {% if request.cookies.get('alternative_font') == "true" %}
+    <style>
+        :root {
+            --font-family: "CozetteVector", monospace;
+        }
+    </style>
+    {% endif %}
     <title>{{ page_title }} - sylvie.lol</title>
 </head>
 <body>

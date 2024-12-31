@@ -220,6 +220,13 @@ def delete_post(db, post_id: str):
 def blog_explore():
     return render_template("blog/explore.html", posts=fetch_all_posts())
 
+@app.route('/blog/switchfont')
+def blog_switchfont():
+    response = redirect(request.referrer)
+    font = request.cookies.get('alternative_font', "false") == "true"
+    response.set_cookie('alternative_font', value="true" if not font else "false")
+    return response
+
 
 @app.route('/blog/<int:post_id>')
 def blog_post(post_id):
