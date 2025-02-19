@@ -31,7 +31,7 @@
 .info-list span {
     width: 100%;
     display: block;
-    font-size: 23px;
+    font-size: 24px;
 }
 
 .info-list .pronouns {
@@ -40,7 +40,7 @@
 
 .info-list .name {
     color: var(--color-pink);
-    font-size: 31px;
+    font-size: 32px;
 }
 
 /* Card > Links */
@@ -63,28 +63,4 @@
 /* Content */
 p {
     width: 100%;
-}
-
-/* 88x31 */
-.eighteightthreeone {
-	font-size: 0;
-}
-
-.eighteightthreeone img {
-	margin: 4px;
-}
-
-.eighteightthreeone img.clickable:hover {
-    outline: 1px var(--color-text) solid
-}
-
-.add-your-own {
-    color: var(--color-subtext0);
-    font-size: 16px;
-}
-
-@media screen and (max-width: 680px) { /* We are probably on mobile */
-    .add-your-own {
-        display: none;
-    }
 }

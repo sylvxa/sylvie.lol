@@ -33,18 +33,8 @@
     {% block header %}{% endblock %}
 
     <script src="{{ url_for('static', filename='time.js') }}" defer></script>
-    <style>
-        @font-face {
-            font-family: "VCR OSD Mono";
-            src: url("{{ url_for('static', filename='assets/fonts/VCR-OSD-Mono.woff2') }}") format("woff2"), 
-                url("{{ url_for('static', filename='assets/fonts/VCR-OSD-Mono.woff') }}") format("woff"),
-                url("{{ url_for('static', filename='assets/fonts/VCR-OSD-Mono.eot') }}") format("embedded-opentype"),
-                url("{{ url_for('static', filename='assets/fonts/VCR-OSD-Mono.ttf') }}") format("truetype");
-            font-weight: normal;
-            font-style: normal;
-            font-display: swap;
-        }
 
+    <style>
         @font-face {
             font-family: "CozetteVector";
             src: url("{{ url_for('static', filename='assets/fonts/CozetteVector.woff2') }}") format("woff2"),
@@ -55,20 +45,24 @@
             font-style: normal;
             font-display: swap;
         }
-    </style>
 
-    {% if request.cookies.get('alternative_font') == "true" %}
-    <style>
         :root {
-            --font-family: "CozetteVector", monospace;
+            --font-family: "CozetteVector", system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
         }
     </style>
-    {% endif %}
+
     <title>{{ page_title }} - sylvie.lol</title>
 </head>
 <body>
     <div class="flex">
         <div class="container">
+            <div class="navbar">
+                {% for link in [('home', '[ABOUT]'), ('contact', '[CONTACT]'), ('blog', '[BLOG]'), ('buttons', '[BUTTONS]')] %}
+                    <a href="{{ url_for(link[0]) }}" {% if link[0] in request.endpoint %} class="we-are-here" {% endif %}>{{ link[1] }}</a>
+                {% endfor %}
+                <span class="time" title="Time in my timezone">12:00</span>
+            </div>
+
             {% block content %}{% endblock %}
         </div>
     </div>

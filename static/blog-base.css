@@ -6,29 +6,6 @@
     height: auto;
 }
 
-/* Navbar */
-.navbar {
-    background-color: var(--color-base);
-    height: 48px;
-    font-size: 23px;
-    box-sizing: border-box;
-    padding: 12px;
-}
-
-a {
-    text-decoration: none;
-    color: var(--color-pink);
-}
-
-
-.navbar a {
-    color: var(--color-text);
-}
-
-a.we-are-here {
-    color: var(--color-pink);
-}
-
 /* Base styles */
 .title {
     margin: 16px;

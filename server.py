@@ -134,12 +134,23 @@ def home():
     discord_name = get_discord_profile()
 
     # Get timezone info for people who don't use JavaScript
-    utc_now = datetime.datetime.now(datetime.timezone.utc)
-    timezone = datetime.timezone(datetime.timedelta(hours=UTC_OFFSET))
+    #utc_now = datetime.datetime.now(datetime.timezone.utc)
+    #timezone = datetime.timezone(datetime.timedelta(hours=UTC_OFFSET))
 
-    offset_now = utc_now.astimezone(timezone)
-    formatted_now = offset_now.strftime("%I:%M %p")
+    #offset_now = utc_now.astimezone(timezone)
+    #formatted_now = offset_now.strftime("%I:%M %p")
 
+    return render_template("home.html",
+                           home_text=HOME_TEXT,  # Markdown formatted home text
+                           discord_name=discord_name)  # Time formatted
+
+
+@app.route('/contact')
+def contact():
+    return render_template("contact.html")
+
+@app.route('/buttons')
+def buttons():
     # Append 88x31s
     eetos = []  # (E)ight(E)ight(T)hree(O)nes
     directory = "assets/eighteightthreeone"
@@ -160,17 +171,7 @@ def home():
             "link": link
         })
 
-    return render_template("home.html",
-                           eeto=eetos,  # 88x31s
-                           home_text=HOME_TEXT,  # Markdown formatted home text
-                           discord_name=discord_name,  # Discord username
-                           current_time=formatted_now)  # Time formatted
-
-
-@app.route('/contact')
-def contact():
-    return render_template("contact.html")
-
+    return render_template("buttons.html", eeto=eetos)
 
 class Post:
     def __init__(self, post_id: int, title: str, description: str, content: str, posted: datetime.datetime) -> None:
@@ -217,15 +218,8 @@ def delete_post(db, post_id: str):
 
 
 @app.route('/blog')
-def blog_explore():
+def blog():
     return render_template("blog/explore.html", posts=fetch_all_posts())
-
-@app.route('/blog/switchfont')
-def blog_switchfont():
-    response = redirect(request.referrer)
-    font = request.cookies.get('alternative_font', "false") == "true"
-    response.set_cookie('alternative_font', value="true" if not font else "false")
-    return response
 
 
 @app.route('/blog/<int:post_id>')

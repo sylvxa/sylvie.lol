@@ -1,13 +1,3 @@
-@media screen and (max-width: 680px) { /* We are probably on mobile */
-    .time {
-        display: none;
-    }
-
-    .navbar {
-        text-align: center;
-    }
-}
-
 /* Card */
 .content {
     margin: 16px;

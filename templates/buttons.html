@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}buttons{% endblock %}
+
+{% block header %}
+<link href="{{ url_for('static', filename='buttons.css') }}" rel="stylesheet" type="text/css">
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    <h1>Nifty buttons!</h1>
+    <h3>A bunch of little 88x31 images from my acquaintances.</h3>
+
+    <div class="eighteightthreeone">
+        {% for link in eeto %}
+            {% if link.link %}
+                <a href="{{ link.link }}"><img src="{{ link.file }}" class="clickable" alt="88x31"></a>
+            {% else %}
+                <img src="{{ link.file }}" alt="88x31">
+            {% endif %}
+        {% endfor %}
+    </div>
+
+    <span class="disclaimer">
+        I am not endorsed by nor do I speak for any of the websites linked to above.
+    </span>
+</div>
+{% endblock %}

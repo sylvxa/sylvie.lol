@@ -7,16 +7,10 @@
 {% endblock %}
 
 {% block content %}
-<div class="navbar">
-    <a href="/" class="we-are-here">[ABOUT]</a>
-    <a href="/blog">[BLOG]</a>
-    <a href="/contact">[CONTACT]</a>
-    <span class="time" title="Time in my timezone">{{ current_time }}</span>
-</div>
 <div class="content">
     <div class="card">
         <div class="image">
-            <img src="{{ url_for('static', filename='assets/discord-profile.png') }}" alt="Sylvia's profile picture" title="disclaimer: image doesn't belong to me">
+            <img src="{{ url_for('static', filename='assets/discord-profile.png') }}" alt="Sylvia's profile picture" title="disclaimer: image doesn't belong to me; taken from my discord profile">
         </div>
         <div class="info-list">
             <span class="name">{{ discord_name }}</span>
@@ -29,22 +23,6 @@
     <div class="info">
         <!-- INSERT VIA MARKDOWN -->
         {{ home_text | safe }}
-    </div>
-    <div class="eighteightthreeone">
-        <!-- INSERT IMAGES -->
-        <div class="gifs">
-            {% for link in eeto %}
-                {% if link.link %}
-                    <a href="{{ link.link }}"><img src="{{ link.file }}" class="clickable" alt="88x31"></a>
-                {% else %}
-                    <img src="{{ link.file }}" alt="88x31">
-                {% endif %}
-
-            {% endfor %}
-        </div>
-        <span class="add-your-own">
-            Do you have a 88x31 of your own? Contact me! (also if you have your own site, add mine!)
-        </span>
     </div>
     <div class="webring">
         <a href="https://ring.ssi.fyi/previous?host=sylvie.lol">←</a>
