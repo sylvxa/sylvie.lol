@@ -29,7 +29,10 @@ TIMEZONE = pytz.timezone('America/Chicago')
 async def load_global_data():
     now = datetime.now(TIMEZONE)
     g.local_time = now.strftime("%H:%M")
-    g.status = "online" #run_query(GET_STATUS_SQL)
+    if now.hour < 7: # Too lazy to figure out actual statuses, sorry!
+        g.status = "offline"
+    else:
+        g.status = "online"
 
 @app.teardown_appcontext
 def close_connection(_):
