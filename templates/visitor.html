@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}sylvie &lt;3{% endblock %}
+
+{% block header %}
+<link href="{{ url_for('static', filename='css/visitor.css') }}" rel="stylesheet" type="text/css">
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+{% endblock %}
+
+{% block content %}
+<section class="visitors">
+    <h1>visitor form</h1>
+    <h3>all messages are reviewed before being published. don't be mean!</h3>
+    <form action="{{ url_for("visitor.post") }}" method="POST">
+        <label>
+            name
+            <input type="text" name="name" placeholder="preferred name" class="styled-input" autocomplete="given-name" required />
+        </label>
+
+        <label for="color">color</label>
+        <select id="color" name="color">
+            {% for color in colors %}
+                <option value="{{ color }}" style="color: var(--color-{{ color }})">{{ color }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="message">message</label>
+        <textarea id="message" name="message" placeholder="your (super flattering) message" class="styled-input" rows="10" minlength="16"  maxlength="512"></textarea>
+
+        <div
+          class="cf-turnstile"
+          data-sitekey="1x00000000000000000000AA"
+          data-theme="dark"
+          data-size="normal"
+          data-appearance="interaction-only"
+        ></div>
+
+        <button type="submit" class="styled-input">submit</button>
+    </form>
+</section>
+{% endblock %}

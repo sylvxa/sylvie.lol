@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}uh oh!{% endblock %}
+
+{% block header %}
+<link href="{{ url_for('static', filename='css/error.css') }}" rel="stylesheet" type="text/css">
+{% endblock %}
+
+{% block content %}
+    <h1>{{ error_code }}: {{ error_name }}</h1>
+    <h3>{{ error_explanation|safe }}</h3>
+
+    <img src="https://http.cat/{{ error_code }}" alt="a cat representing a(n) {{ error_name }} exception">
+{% endblock %}

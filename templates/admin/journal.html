@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}sylvie's writing room{% endblock %}
+
+{% block header %}
+<link href="{{ url_for('static', filename='css/admin/visitor.css') }}" rel="stylesheet" type="text/css">
+<link href="{{ url_for('static', filename='css/admin/ctp-mocha.css') }}" rel="stylesheet" type="text/css">
+
+<link rel="stylesheet" href="https://unpkg.com/easymde/dist/easymde.min.css">
+<script src="https://unpkg.com/easymde/dist/easymde.min.js"></script>
+{% endblock %}
+
+{% block content %}
+    <h1>writing room</h1>
+    <section class="post_article">
+        <form action="{{ url_for("admin.post_article") }}" method="POST">
+            <label>
+                image path
+                <input type="text" name="img" placeholder="assets/icons/globe.png" class="styled-input" required />
+            </label>
+
+            <label>
+                article title
+                <input type="text" name="title" placeholder="hello world!" class="styled-input" required />
+            </label>
+
+            <label>
+                article description
+                <input type="text" name="description" placeholder="hello world!" class="styled-input" required />
+            </label>
+
+            <label for="content">content</label>
+            <textarea id="content" name="content" placeholder="# foo bar" class="styled-input" rows="20"></textarea>
+
+            <button type="submit" class="styled-input">submit</button>
+        </form>
+    </section>
+
+    <form action="{{ url_for("admin.remove_article") }}" method="POST">
+        <label>
+            delete post
+            <input type="number" name="id" placeholder="1759631809" class="styled-input" required />
+        </label>
+
+        <button type="submit" class="styled-input">remove</button>
+    </form>
+
+    <script>
+    const easyMDE = new EasyMDE({"theme": "ctp-mocha"});
+    </script>
+{% endblock %}

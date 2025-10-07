@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}sylvie's journal{% endblock %}
+
+{% block meta %}
+    <!-- These are by default, but individual pages will want to overwrite these -->
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="{{ post[2] }}" />
+    <meta name="description" content="{{ post[3] }}" />
+    <meta name="theme-color" content="#11111b">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://sylvie.lol/" />
+    <meta property="og:title" content="{{ post[2] }}" />
+    <meta property="og:description" content="{{ post[3] }}" />
+    <meta property="og:image" content="{{ url_for('static', filename=post[1]) }}" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary" />
+    <meta property="twitter:url" content="https://sylvie.lol/" />
+    <meta property="twitter:title" content="{{ post[2] }}" />
+    <meta property="twitter:description" content="{{ post[3] }}" />
+    <meta property="twitter:image" content="{{ url_for('static', filename=post[1]) }}" />
+{% endblock %}
+
+{% block header %}
+<link href="{{ url_for('static', filename='css/blog/post.css') }}" rel="stylesheet" type="text/css">
+{% endblock %}
+
+{% block content %}
+    <section class="synopsis">
+        <div class="title">
+            <img src="{{ url_for('static', filename=post[1]) }}" alt="article icon" width="32" height="32">
+            <h1>{{ post[2] }}</h1>
+        </div>
+        <span class="description">{{ post[3] }}</span>
+        <span class="timestamp"><time datetime="{{ post[5].strftime('%Y-%m-%dT%H:%M:%SZ') }}">{{ post[5].strftime("%B %d, %Y") }}</time></span>
+    </section>
+    <section class="article">
+        {{ content|safe }}
+    </section>
+{% endblock %}

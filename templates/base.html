@@ -1,0 +1,109 @@
+{% set page_title %}{% block title %}{% endblock %}{% endset %}
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='apple-touch-icon.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='favicon-16x16.png') }}">
+    <link rel="manifest" href="{{ url_for('static', filename='site.webmanifest') }}">
+
+    <style>
+        @font-face {
+            font-family: Virtue;
+            src: url("{{ url_for('static', filename='fonts/virtue.ttf') }}");
+        }
+
+        :root {
+            --background-url: url("{{ url_for('static', filename='assets/bg-tile.png') }}")
+        }
+    </style>
+
+    {% block meta %}
+    <!-- These are by default, but individual pages will want to overwrite these -->
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="{{ page_title }}" />
+    <meta name="description" content="software developer/professional nerd" />
+    <meta name="theme-color" content="#11111b">
+    <meta name="keywords" content="sylvxa, sylvia, sylvie, programming, blog" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://sylvie.lol/" />
+    <meta property="og:title" content="{{ page_title }}" />
+    <meta property="og:description" content="software developer/professional nerd" />
+    <meta property="og:image" content="{{ url_for('static', filename='assets/profile.png') }}" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary" />
+    <meta property="twitter:url" content="https://sylvie.lol/" />
+    <meta property="twitter:title" content="{{ page_title }}"/>
+    <meta property="twitter:description" content="software developer/professional nerd" />
+    <meta property="twitter:image" content="{{ url_for('static', filename='assets/profile.png') }}" />
+    {% endblock %}
+
+    <title>{{ page_title }}</title>
+
+    {% block header %}{% endblock %}
+</head>
+
+<body>
+    <nav class="sidebar">
+        <ul class="page-list navigation">
+            <span class="link-title">navigation</span>
+            <span class="alt-link-title">sylvie.lol</span>
+            <li><a href="{{ url_for('home') }}" data-dest="home">me &lt;3</a></li>
+            <li><a href="{{ url_for('project.explore') }}" data-dest="projects">projects</a></li>
+            <li><a href="{{ url_for('blog.explore') }}" data-dest="blog">journal</a></li>
+            {% if request.cookies.get('Parental-Control') %}
+                <li>
+                    <a href="{{ url_for("admin.couch") }}" data-dest="couch" style="font-weight: bold">couch</a>
+                </li>
+            {% endif %}
+        </ul>
+        <ul class="page-list status">
+            <span class="link-title">status</span>
+            <li><img src="{{ url_for('static', filename='assets/icons/clock.png') }}" alt="Clock">{{ g.local_time }} (CT)</li>
+            {% if g.status == "online" %}
+                <li style="color: var(--color-green)"><img src="{{ url_for('static', filename='assets/icons/online.png') }}" alt="Status">online</li>
+            {% elif g.status == "idle" %}
+                <li style="color: var(--color-yellow)"><img src="{{ url_for('static', filename='assets/icons/idle.png') }}" alt="Status" title="(probably offline)">idle</li>
+            {% else %}
+                <li style="color: var(--color-red)"><img src="{{ url_for('static', filename='assets/icons/offline.png') }}" alt="Status">offline</li>
+            {% endif %}
+        </ul>
+        <ul class="page-list contact">
+            <span class="link-title">contact</span>
+            <li><img src="{{ url_for('static', filename='assets/icons/discord.png') }}" alt="Discord Logo"><a href="https://discord.com/invite/5qzrB98sBA"
+                    target="_blank">@sylvxa</a></li>
+            <li><img src="{{ url_for('static', filename='assets/icons/modrinth.png') }}" alt="Modrinth Logo"><a href="https://modrinth.com/user/sylvxa"
+                    target="_blank">/user/sylvxa</a></li>
+            <li><img src="{{ url_for('static', filename='assets/icons/github.png') }}" alt="GitHub Logo"><a href="https://github.com/sylvxa"
+                    target="_blank">/sylvxa</a>
+            </li>
+            <li><img src="{{ url_for('static', filename='assets/icons/email.png') }}" alt="Email Icon"><a href="mailto:me@sylvie.lol"
+                    target="_blank">me@sylvie.lol</a>
+            </li>
+        </ul>
+
+    </nav>
+    <main>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+              {% for category, message in messages %}
+                  <div class="flash {{ category }}"><span>{{ message|safe }}</span></div>
+              {% endfor %}
+            {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+    </main>
+</body>
+
+</html>

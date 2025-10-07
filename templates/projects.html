@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}sylvie's projects{% endblock %}
+
+{% block header %}
+<link href="{{ url_for('static', filename='css/projects.css') }}" rel="stylesheet" type="text/css">
+{% endblock %}
+
+{% block content %}
+    <div class="title">
+        <h1>my projects</h1>
+    </div>
+    <h3>take a looksie at what i've done</h3>
+    <section class="projects">
+        {% for project in projects %}
+        <a {% if project[4] %} href="{{ project[4] }}" {% endif %} target="_blank" class="project" data-id="{{ project[0] }}">
+            <div class="title">
+                <span class="name">{{ project[1] }}</span>
+                <span class="description">{{ project[2] }}</span>
+            </div>
+
+            <img src="{{ project[3] }}" alt="project thumbnail">
+            <span class="lifespan">{{ project[5] }}</span>
+        </a>
+        {% endfor %}
+    </section>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}sylvie's approval room{% endblock %}
+
+{% block header %}
+<link href="{{ url_for('static', filename='css/admin/visitor.css') }}" rel="stylesheet" type="text/css">
+{% endblock %}
+
+{% block content %}
+    <h1>approval room</h1>
+    <section class="posts">
+        {% for post in posts %}
+            <ul>
+                <li><span>{{ post[0] }} - </span><a href="{{ url_for("admin.approve_visitor", visitor_id=post[0]) }}">{{ post[1] }}: {{ post[3] }}</a></li>
+            </ul>
+        {% endfor %}
+    </section>
+
+    <form action="{{ url_for("admin.deny_visitor") }}" method="POST">
+        <label>
+            delete visitor
+            <input type="number" name="id" placeholder="1759631809" class="styled-input" required />
+        </label>
+
+        <button type="submit" class="styled-input">remove</button>
+    </form>
+{% endblock %}

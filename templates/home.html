@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block title %}sylvie &lt;3{% endblock %}
+
+{% block header %}
+<link href="{{ url_for('static', filename='css/home.css') }}" rel="stylesheet" type="text/css">
+{% endblock %}
+
+{% block content %}
+<section class="profile-card">
+    <img src="{{ url_for('static', filename='assets/profile.png') }}" alt="Discord Profile">
+    <div class="details">
+        <span class="display-name">sylvie &lt;3</span>
+        <span class="pronouns">she/her</span>
+    </div>
+</section>
+<section class="bio">
+    <p class="indent">
+        hi! my name is sylvia, but you can call me sylvie for short. i'm a software developer, student, and <i>a
+            lot</i> of other things. i'm primarily known for my work in the minecraft modding community, and my
+        discord server is on the sidebar if that's what you are here for.
+    </p>
+    <p class="indent">
+        i enjoy amateur speedrunning, minecraft tryharding, badly pixel-arting, old macintosh collecting, and a lot of other nerdy stuff.
+    </p>
+</section>
+<section class="visitors">
+    <h1><b>visitor wall</b></h1>
+    <a class="submit-page" href="{{ url_for("visitor.submit") }}">click here leave your mark on my page &lt;3</a>
+    <div class="messages">
+        {% for visitor in visitors %}
+            <article class="message" data-id="{{ visitor[0] }}">
+                <span class="author" style="color: var(--color-{{ visitor[2] }})">{{ visitor[1] }}</span>
+                <p class="content">
+                    {{ visitor[3] }}
+                </p>
+                <span class="timestamp">{{ visitor[5].strftime('%B %d, %Y at %H:%M') }}</span>
+            </article>
+        {% endfor %}
+    </div>
+
+</section>
+<section class="buttons">
+    {% for link in buttons %}
+        {% if link.link %}
+            <a href="{{ link.link }}"><img src="{{ link.file }}" alt="88x31"></a>
+        {% else %}
+            <img src="{{ link.file }}" alt="88x31">
+        {% endif %}
+    {% endfor %}
+
+    <span>I am not endorsed by, nor do I speak for, any of the websites linked to above.</span>
+</section>
+{% endblock %}

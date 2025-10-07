@@ -1,0 +1,28 @@
+a[data-dest="couch"] {
+    color: var(--color-peach) !important;
+}
+
+::file-selector-button {
+    background-color: var(--color-mantle);
+    color: var(--color-text);
+    padding: 4px 8px;
+    border: none;
+    border-radius: 0;
+    font-family: var(--font-family), serif;
+
+    font-size: 16px;
+    cursor: pointer;
+}
+
+label {
+    display: block;
+    margin-bottom: 4px;
+}
+
+button {
+    margin-top: 8px;
+}
+
+.flash.success a {
+    color: var(--color-green) !important;
+}

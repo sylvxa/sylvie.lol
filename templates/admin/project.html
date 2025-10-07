@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}sylvie's announcement room{% endblock %}
+
+{% block header %}
+<link href="{{ url_for('static', filename='css/admin/project.css') }}" rel="stylesheet" type="text/css">
+{% endblock %}
+
+{% block content %}
+    <h1>announcement room</h1>
+
+    <form action="{{ url_for("admin.post_project") }}" method="POST">
+        <label for="title">project title</label>
+        <input type="text" id="title" name="title" class="styled-input" required />
+
+        <label for="description">project description</label>
+        <input type="text" id="description" name="description" class="styled-input" required />
+
+        <label for="thumbnail">project thumbnail</label>
+         <input type="text" id="thumbnail" name="thumbnail" class="styled-input" required />
+
+        <label for="link">project link</label>
+        <input type="text" id="link" name="link" class="styled-input" />
+
+        <label for="lifespan">project lifespan</label>
+        <input type="text" id="lifespan" name="lifespan" class="styled-input" required />
+
+        <button type="submit" class="styled-input">publish</button>
+    </form>
+
+    <form action="{{ url_for("admin.remove_project") }}" method="POST">
+        <label>
+            delete post
+            <input type="number" name="id" placeholder="1759631809" class="styled-input" required />
+        </label>
+
+        <button type="submit" class="styled-input">remove</button>
+    </form>
+{% endblock %}

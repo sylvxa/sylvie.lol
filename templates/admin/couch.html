@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block title %}sylvie's couch{% endblock %}
+
+{% block header %}
+<link href="{{ url_for('static', filename='css/admin/couch.css') }}" rel="stylesheet" type="text/css">
+{% endblock %}
+
+{% block content %}
+    <h1>sylvie's couch</h1>
+    <a href="{{ url_for("admin.journal") }}">feel like writing?</a>
+    <a href="{{ url_for("admin.visitors") }}">or perhaps you have some messages waiting?</a>
+    <a href="{{ url_for("admin.project") }}">or do you have something you're excited about?</a>
+
+    <form action="{{ url_for("admin.status") }}" method="POST">
+        <label for="status">status (currently {{ g.status }})</label>
+        <select id="status" name="status">
+            <option value="online" style="color: var(--color-green)">online</option>
+            <option value="idle" style="color: var(--color-yellow)">idle</option>
+            <option value="offline" style="color: var(--color-red)">offline</option>
+        </select>
+
+        <button type="submit" class="styled-input">update</button>
+    </form>
+
+    <form action="{{ url_for("admin.upload_file") }}" method="POST" enctype="multipart/form-data">
+        <label for="file">
+            file upload
+        </label>
+        <input type="file" name="file" />
+
+        <button type="submit" class="styled-input">upload</button>
+    </form>
+{% endblock %}

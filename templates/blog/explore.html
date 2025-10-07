@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}sylvie's journal{% endblock %}
+
+{% block header %}
+<link href="{{ url_for('static', filename='css/blog/explore.css') }}" rel="stylesheet" type="text/css">
+{% endblock %}
+
+{% block content %}
+    <div class="title">
+        <h1>my journal</h1>
+    </div>
+    <h3>what i've been up to, and other ramblings</h3>
+    <section class="posts">
+        {% for post in posts %}
+        <article class="post">
+            <div class="title">
+                <img src="{{ url_for('static', filename=post[1]) }}" alt="article icon" width="32" height="32">
+                <a href="{{ url_for('blog.view', post_id=post[0]) }}">{{ post[2] }}</a>
+            </div>
+
+            <span class="timestamp"><time datetime="{{ post[5].strftime('%Y-%m-%dT%H:%M:%SZ') }}">{{ post[5].strftime("%B %d, %Y") }}</time></span>
+            <span class="description">{{ post[3] }}</span>
+        </article>
+        {% endfor %}
+    </section>
+{% endblock %}

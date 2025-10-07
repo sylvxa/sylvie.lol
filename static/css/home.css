@@ -1,0 +1,111 @@
+a[data-dest="home"] {
+    color: var(--color-peach) !important;
+}
+
+.profile-card {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    font-size: 24px;
+}
+
+.profile-card img {
+    width: 96px;
+    image-rendering: auto;
+}
+
+.profile-card .details {
+    margin-left: 24px;
+}
+
+.profile-card .details span {
+    display: block;
+}
+
+span.display-name {
+    color: var(--color-peach);
+    font-size: 32px;
+}
+
+
+span.pronouns {
+    color: var(--color-subtext0);
+}
+
+.buttons {
+    margin-top: auto;
+}
+
+.buttons a {
+    margin-right: 4px;
+    margin-bottom: 4px;
+}
+
+.buttons a img:hover {
+    outline: 1px var(--color-text) solid;
+}
+
+.buttons span {
+    display: block;
+    margin-top: 4px;
+    font-size: 0.9rem;
+    color: var(--color-subtext0);
+    font-style: italic;
+}
+
+.visitors {
+    margin-bottom: 32px;
+}
+
+.visitors .messages {
+    display: flex;
+
+    height: 256px;
+    flex-direction: column;
+    overflow-y: scroll;
+
+
+    margin-top: 8px;
+}
+
+.visitors .message {
+    max-width: 100%;
+    width: max-content;
+    background: var(--color-mantle);
+    padding: 4px 8px;
+    box-sizing: border-box;
+    border: 3px var(--color-base) solid;
+    margin-bottom: 4px;
+}
+
+@media screen and (max-width: 600px) {
+    .visitors .message {
+        width: 100%;
+    }
+}
+
+.visitors .message .author {
+    font-size: 1rem;
+    color: var(--color-pink); /* TODO: Make this customizable */
+}
+
+.visitors .message .timestamp {
+    font-size: 0.9rem;
+    color: var(--color-subtext0); /* TODO: Make this customizable */
+}
+
+.visitors .message .content {
+    font-size: 1.1rem;
+    color: var(--color-subtext1);
+    margin: 0;
+    word-break: break-all;
+}
+
+.visitors .submit-page {
+    color: var(--color-subtext0);
+    text-decoration: none;
+}
+
+.visitors .submit-page:hover {
+    color: var(--color-text);
+}
