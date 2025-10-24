@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-from flask import Flask, send_from_directory, g, render_template, url_for
+from flask import Flask, send_from_directory, g, render_template, url_for, redirect
 from datetime import datetime
 
 from admin import admin
@@ -60,6 +60,16 @@ def page_on_fire(e):
 @app.route('/data/assets/<path:path>')
 def send_assets(path):
     return send_from_directory('data/assets', path)
+
+# for compatibility with the old rss feed
+@app.route('/blog/feed')
+def rss_feed_redirect():
+    return redirect(url_for('blog.rss_feed'))
+
+@app.route('/sitemap.xml')
+def sitemap_redirect():
+    return redirect(url_for('blog.sitemap'))
+
 
 @app.route('/')
 def home():  # put application's code here
