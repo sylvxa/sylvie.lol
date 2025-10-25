@@ -1,14 +1,14 @@
 import os
 import uuid
 
-from flask import Blueprint, request, render_template, redirect, url_for, flash, abort, g, send_from_directory
+from flask import Blueprint, request, render_template, redirect, url_for, flash, abort
 
 from blog import delete_post, insert_post
+from custom import insert_custom_route, delete_custom_route
 from visitor import fetch_all_visitors, approve_post, deny_post
 from project import insert_project, delete_project
 
 admin = Blueprint('admin', __name__, template_folder='templates/admin')
-STATUS = "online"
 
 @admin.before_request
 def blueprint_before_request():
@@ -86,8 +86,20 @@ def upload_file():
     else:
         return "No file found"
 
-@admin.route('/status', methods=['POST'])
-def status():
-    status = request.form.get('status')
-    flash(f"Set status to {STATUS}!", "success")
-    return redirect(url_for("admin.couch"))
+@admin.route('/custom')
+def custom_route():
+    return render_template("custom.html")
+
+@admin.route('/custom/post', methods=['POST'])
+def add_custom_route():
+    name = request.form.get('name')
+    insert_custom_route(name, request.form.get('destination'))
+    url = url_for('custom.index', name=name)
+    flash(f"Added custom route at <a href=\"{url}\">{url}</a>!", "success")
+    return redirect(url_for('admin.custom_route'))
+
+@admin.route('/custom/remove', methods=['POST'])
+def remove_custom_route():
+    delete_custom_route(request.form.get('name'))
+    flash("Successfully deleted!", "success")
+    return redirect(url_for('admin.custom_route'))

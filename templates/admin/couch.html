@@ -11,17 +11,7 @@
     <a href="{{ url_for("admin.journal") }}">feel like writing?</a>
     <a href="{{ url_for("admin.visitors") }}">or perhaps you have some messages waiting?</a>
     <a href="{{ url_for("admin.project") }}">or do you have something you're excited about?</a>
-
-    <form action="{{ url_for("admin.status") }}" method="POST">
-        <label for="status">status (currently {{ g.status }})</label>
-        <select id="status" name="status">
-            <option value="online" style="color: var(--color-green)">online</option>
-            <option value="idle" style="color: var(--color-yellow)">idle</option>
-            <option value="offline" style="color: var(--color-red)">offline</option>
-        </select>
-
-        <button type="submit" class="styled-input">update</button>
-    </form>
+    <a href="{{ url_for("admin.custom_route") }}">or are you interested in some cartography?</a>
 
     <form action="{{ url_for("admin.upload_file") }}" method="POST" enctype="multipart/form-data">
         <label for="file">

@@ -42,6 +42,13 @@ INSERT_PROJECT_SQL = "INSERT INTO projects (id, title, description, img, link, l
 DELETE_PROJECT_BY_ID_SQL = "DELETE FROM projects WHERE id = ?"
 SELECT_PROJECTS_SQL = "SELECT * FROM projects ORDER BY id DESC;"
 
+CREATE_CUSTOM_TABLE_SQL = "CREATE TABLE custom ( \
+    name text PRIMARY KEY, \
+    destination text)"
+INSERT_CUSTOM_SQL = "INSERT INTO custom (name, destination) VALUES (?,?)"
+DELETE_CUSTOM_SQL = "DELETE FROM custom WHERE name = ?"
+GET_CUSTOM_SQL = "SELECT destination FROM custom WHERE name = ?"
+
 if not os.path.exists("data"):
     os.mkdir("data")
 if not os.path.exists('data/assets'):
@@ -53,6 +60,7 @@ def initialize_db():
     db = sqlite3.connect(DATABASE_FILE, detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
     cursor = db.cursor()
     try:
+        cursor.execute(CREATE_CUSTOM_TABLE_SQL)
         cursor.execute(CREATE_BLOG_TABLE_SQL)
         cursor.execute(CREATE_VISITOR_TABLE_SQL)
         cursor.execute(CREATE_PROJECT_TABLE_SQL)

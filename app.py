@@ -10,6 +10,7 @@ from datetime import datetime
 
 from admin import admin
 from blog import blog
+from custom import custom
 from visitor import visitor, fetch_all_visitors
 from project import project
 
@@ -17,8 +18,9 @@ app = Flask(__name__)
 app.secret_key = os.getenv('FLASK_SECRET_KEY')
 app.register_blueprint(admin, url_prefix='/meeeeeeee')
 app.register_blueprint(blog, url_prefix='/journal') # yeah, i'm branding it as journal because blog sounds *obtuse*
+app.register_blueprint(custom, url_prefix='/r') # custom routes
 app.register_blueprint(project, url_prefix='/projects')
-app.register_blueprint(visitor)
+app.register_blueprint(visitor, url_prefix='/visitor')
 
 @app.route('/favicon.ico')
 def favicon():
@@ -69,7 +71,6 @@ def rss_feed_redirect():
 @app.route('/sitemap.xml')
 def sitemap_redirect():
     return redirect(url_for('blog.sitemap'))
-
 
 @app.route('/')
 def home():  # put application's code here

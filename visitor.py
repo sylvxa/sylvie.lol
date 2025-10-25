@@ -26,7 +26,7 @@ def approve_post(visitor_id: int) -> None:
 def deny_post(visitor_id: int) -> None:
     run_query(DELETE_VISITOR_POST_BY_ID_SQL, [visitor_id])
 
-@visitor.route('/visitor')
+@visitor.route('/')
 def submit():  # put application's code here
     return render_template("visitor.html", colors=COLORS)
 
@@ -39,7 +39,7 @@ def validate_post(name: str, color: str, message: str) -> str | None:
         return "Invalid message length!"
     return None
 
-@visitor.route('/visitor/post', methods=['POST'])
+@visitor.route('/post', methods=['POST'])
 def post():  # put application's code here
     secret = os.getenv('CLOUDFLARE_SECRET')
     response = request.form.get('cf-turnstile-response')
@@ -50,7 +50,7 @@ def post():  # put application's code here
     })
     res = r.json()
 
-    if  res['success']:
+    if res['success']:
         name = request.form.get("name")
         color = request.form.get("color")
         message = request.form.get("message")
