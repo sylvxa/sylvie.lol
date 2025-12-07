@@ -2,6 +2,7 @@
 
 <!doctype html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -22,7 +23,13 @@
         }
 
         :root {
-            --background-url: url("{{ url_for('static', filename='assets/bg-tile.png') }}")
+            --background-url: url("{{ url_for('static', filename='assets/bg-tile.png') }}");
+
+            /* cursor images mainly taken from https://www.deviantart.com/nonme85851/art/Mac-OS-9-Cursors-for-Windows-445011230 */
+            /* beam is technically inaccurate, but you can't have an inverted cursor w/o JavaScript */
+            --cursor-arrow: url("{{ url_for('static', filename='assets/cursors/arrow.cur') }}");
+            --cursor-beam: url("{{ url_for('static', filename='assets/cursors/beam.png') }}");
+            --cursor-hand: url("{{ url_for('static', filename='assets/cursors/hand.cur') }}");
         }
     </style>
 
@@ -44,7 +51,7 @@
     <!-- Twitter -->
     <meta property="twitter:card" content="summary" />
     <meta property="twitter:url" content="https://sylvie.lol/" />
-    <meta property="twitter:title" content="{{ page_title }}"/>
+    <meta property="twitter:title" content="{{ page_title }}" />
     <meta property="twitter:description" content="software developer/professional nerd" />
     <meta property="twitter:image" content="{{ url_for('static', filename='assets/profile.png') }}" />
     {% endblock %}
@@ -63,44 +70,48 @@
             <li><a href="{{ url_for('project.explore') }}" data-dest="projects">projects</a></li>
             <li><a href="{{ url_for('blog.explore') }}" data-dest="blog">journal</a></li>
             {% if request.cookies.get('Parental-Control') %}
-                <li>
-                    <a href="{{ url_for("admin.couch") }}" data-dest="couch" style="font-weight: bold">couch</a>
-                </li>
+            <li>
+                <a href="{{ url_for(" admin.couch") }}" data-dest="couch" style="font-weight: bold">couch</a>
+            </li>
             {% endif %}
         </ul>
         <ul class="page-list status">
             <span class="link-title">status</span>
-            <li><img src="{{ url_for('static', filename='assets/icons/clock.png') }}" alt="Clock">{{ g.local_time }} (CT)</li>
+            <li><img src="{{ url_for('static', filename='assets/icons/clock.png') }}" alt="Clock">{{ g.local_time }}
+                (CT)</li>
             {% if g.status == "online" %}
-                <li style="color: var(--color-green)"><img src="{{ url_for('static', filename='assets/icons/online.png') }}" alt="Status">online</li>
+            <li style="color: var(--color-green)"><img src="{{ url_for('static', filename='assets/icons/online.png') }}"
+                    alt="Status">online</li>
             {% elif g.status == "idle" %}
-                <li style="color: var(--color-yellow)"><img src="{{ url_for('static', filename='assets/icons/idle.png') }}" alt="Status" title="(probably offline)">idle</li>
+            <li style="color: var(--color-yellow)"><img src="{{ url_for('static', filename='assets/icons/idle.png') }}"
+                    alt="Status" title="(probably offline)">idle</li>
             {% else %}
-                <li style="color: var(--color-red)"><img src="{{ url_for('static', filename='assets/icons/offline.png') }}" alt="Status">offline</li>
+            <li style="color: var(--color-red)"><img src="{{ url_for('static', filename='assets/icons/offline.png') }}"
+                    alt="Status">offline</li>
             {% endif %}
         </ul>
         <ul class="page-list contact">
             <span class="link-title">contact</span>
-            <li><img src="{{ url_for('static', filename='assets/icons/discord.png') }}" alt="Discord Logo"><a href="https://discord.com/invite/5qzrB98sBA"
-                    target="_blank">@sylvxa</a></li>
-            <li><img src="{{ url_for('static', filename='assets/icons/modrinth.png') }}" alt="Modrinth Logo"><a href="https://modrinth.com/user/sylvxa"
-                    target="_blank">/user/sylvxa</a></li>
-            <li><img src="{{ url_for('static', filename='assets/icons/github.png') }}" alt="GitHub Logo"><a href="https://github.com/sylvxa"
-                    target="_blank">/sylvxa</a>
+            <li><img src="{{ url_for('static', filename='assets/icons/discord.png') }}" alt="Discord Logo"><a
+                    href="https://discord.com/invite/5qzrB98sBA" target="_blank">@sylvxa</a></li>
+            <li><img src="{{ url_for('static', filename='assets/icons/modrinth.png') }}" alt="Modrinth Logo"><a
+                    href="https://modrinth.com/user/sylvxa" target="_blank">/user/sylvxa</a></li>
+            <li><img src="{{ url_for('static', filename='assets/icons/github.png') }}" alt="GitHub Logo"><a
+                    href="https://github.com/sylvxa" target="_blank">/sylvxa</a>
             </li>
-            <li><img src="{{ url_for('static', filename='assets/icons/email.png') }}" alt="Email Icon"><a href="mailto:me@sylvie.lol"
-                    target="_blank">me@sylvie.lol</a>
+            <li><img src="{{ url_for('static', filename='assets/icons/email.png') }}" alt="Email Icon"><a
+                    href="mailto:me@sylvie.lol" target="_blank">me@sylvie.lol</a>
             </li>
         </ul>
 
     </nav>
     <main>
         {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-              {% for category, message in messages %}
-                  <div class="flash {{ category }}"><span>{{ message|safe }}</span></div>
-              {% endfor %}
-            {% endif %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <div class="flash {{ category }}"><span>{{ message|safe }}</span></div>
+        {% endfor %}
+        {% endif %}
         {% endwith %}
         {% block content %}{% endblock %}
     </main>

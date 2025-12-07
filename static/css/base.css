@@ -51,6 +51,26 @@ body {
     display: flex;
 }
 
+html,
+body,
+select,
+option,
+iframe {
+    cursor: var(--cursor-arrow), auto;
+}
+
+a,
+button {
+    cursor: var(--cursor-hand), pointer;
+}
+
+p,
+input,
+textarea,
+[contenteditable] {
+    cursor: var(--cursor-beam) 4 9, text;
+}
+
 h1,
 h2,
 h3,
@@ -61,7 +81,10 @@ h6 {
     margin: 0px 0px;
 }
 
-h3, h4, h5, h6 {
+h3,
+h4,
+h5,
+h6 {
     color: var(--color-subtext0);
 }
 
@@ -244,12 +267,11 @@ form {
 }
 
 ::placeholder {
-  color: var(--color-subtext0);
+    color: var(--color-subtext0);
 }
 
 button {
     color: var(--color-text);
-    cursor: pointer;
 }
 
 button:hover {
