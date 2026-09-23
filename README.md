@@ -4,6 +4,8 @@ hi! this is the github repo for my personal website.
 
 fair warning: this website was made with the intent of nobody but me seeing it's inner workings, so some of the comments or codepaths are a bit nonsensical to people who aren't me
 
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/05e7f461-b865-4006-a468-f973c30c2bd1" />
+
 ## tech
 
 the backend is written in Flask, with SQLite being used to store blog entries. 
