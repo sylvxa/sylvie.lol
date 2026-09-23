@@ -71,7 +71,7 @@
             <li><a href="{{ url_for('blog.explore') }}" data-dest="blog">journal</a></li>
             {% if request.cookies.get('Parental-Control') %}
             <li>
-                <a href="{{ url_for(" admin.couch") }}" data-dest="couch" style="font-weight: bold">couch</a>
+                <a href="{{ url_for("admin.couch") }}" data-dest="couch" style="font-weight: bold">couch</a>
             </li>
             {% endif %}
         </ul>
