@@ -43,14 +43,27 @@ a[data-dest="blog"] {
 .article h1 {
     font-size: 1.75rem;
     color: var(--color-peach);
+    margin-top: 24px;
 }
 
 .article img {
     display: block;
     margin: 0 auto;
+    max-width: 100%;
 }
 
 .article p {
     font-size: 1.2rem;
     margin: 4px 0 16px;
+}
+
+}
+
+.article li {
+    font-size: 19px;
+    margin: 4px 0px;
+}
+
+.article li code {
+    font-size: 16px;
 }
