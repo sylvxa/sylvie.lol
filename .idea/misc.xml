@@ -3,6 +3,6 @@
   <component name="Black">
     <option name="sdkName" value="Python 3.13 (sylvielol-flask)" />
   </component>
-  <component name="KubernetesApiProvider"><![CDATA[{}]]></component>
-  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.13 (sylvielol-flask)" project-jdk-type="Python SDK" />
+  <component name="KubernetesApiProvider">{}</component>
+  <component name="ProjectRootManager" version="2" project-jdk-name="~/Projects/sylvie.lol/.venv" project-jdk-type="Python SDK" />
 </project>
